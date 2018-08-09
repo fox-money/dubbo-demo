@@ -1,0 +1,4 @@
+com\hml\dubbo\provider\DemoServiceImpl.class
+com\hml\dubbo\provider\ProviderApplication.class
+com\hml\dubbo\provider\SiteIntercepter.class
+com\hml\dubbo\provider\Start.class

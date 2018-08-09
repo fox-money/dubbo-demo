@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
+	   default-lazy-init="true">
+
+	<description>Spring公共配置 </description>
+	<!-- 开启注解配置 -->
+	<context:annotation-config/>
+	<context:component-scan base-package="com.hml" />
+	<bean id="springContextHolder" class="org.itboys.framework.spring.context.SpringContextHolder"
+		  lazy-init="false" />
+	<bean id="propertyConfigurerForAnalysis" class="com.hml.dubbo.log.ItboysPropertyPlaceholderConfigurer" />
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.hml.dubbo.provider.SiteIntercepter" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<!-- velocity引擎 -->
+	<bean id="velocityConfigurer"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<!-- 正式环境可配置相对路径 亦可配置绝对路径 开发时候配绝对路径修改vm模板无需启动 -->
+		<property name="resourceLoaderPath" value="${velocity.template.path}" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+				<prop key="velocimacro.library.autoreload">true</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="velocityViewResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="numberToolAttribute" value="number" />
+        <property name="dateToolAttribute" value="date" />
+        <property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="exposeSpringMacroHelpers" value="true" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="cache" value="true" />
+		<property name="prefix" value="screen/" />
+		<property name="suffix" value=".vm" />
+		<property name="layoutUrl" value="layout/common-layout.vm" />
+		<property name="requestContextAttribute" value="rc" />
+	</bean>
+</beans>

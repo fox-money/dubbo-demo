@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!--指定了程序名称，我们可以在dubbo管理后台中通过该名称更清晰的区分服务-->
+    <dubbo:application name="dubbo-provider"/>
+    <!--指定了注册中心的地址-->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <!--指定了集群容错模式，此处为快速失败-->
+    <dubbo:provider cluster="failfast"/>
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="${dubbo.port}" />
+    <!-- 普通的spring依赖注入-->
+    <bean id="demoService" class="com.hml.dubbo.provider.DemoServiceImpl"/>
+    <!--服务导出，引用<bean>标签注入的类-->
+    <dubbo:service interface="com.hml.dubbo.api.DemoService" ref="demoService"/>
+
+    <dubbo:annotation />
+</beans>
